@@ -10,7 +10,7 @@ build:
   number: 3
   skip: True # [osx]
   run_exports:
-    - {{ pin_subpackage(name|lower) }}
+    - {{ pin_subpackage("rseg"|lower) }}
 
 requirements:
   build:
@@ -27,8 +27,6 @@ test:
     - rseg -about 2>&1
     - rseg-diff -about 2>&1
     - deadzones -about 2>&1
-    - bayesTyper | grep BayesTyper
-    - bayesTyperTools | grep BayesTyperTools
 
 about:
   home: http://smithlabresearch.org/software/rseg
