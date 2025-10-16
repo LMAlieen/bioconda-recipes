@@ -14,10 +14,12 @@ build:
         - cygdb = Cython.Debugger.Cygdb:main
         - cython = Cython.Compiler.Main:setuptools_main
         - cythonize = Cython.Build.Cythonize:main
-    number: '1001'
-    script: $PYTHON -m pip install --no-deps --ignore-installed .
+    number: 1001
     run_exports:
-        - {{ pin_subpackage("cython",max_pin="x.x") }}	
+        - {{ pin_compatible("cython", max_pin="x.x") }}
+    script: $PYTHON -m pip install --no-deps --ignore-installed .
+    #run_exports:
+    #    - {{ pin_subpackage("cython",max_pin="x.x") }}	
 requirements:
     build:
       #- binutils_impl_linux-aarch64 
@@ -28,7 +30,7 @@ requirements:
       #  - gxx_linux-aarch64 
         - python 2.7.16
         - ncurses 6.5
-        - libxcrypt
+        - openssl
     host:
         - libffi 3.5.2 
         - ncurses 6.5 
@@ -50,9 +52,6 @@ test:
     files:
         - fib.pyx
 about:
-    additional-platforms:
-         - linux-aarch64
-
     description: 'Cython is an optimising static compiler for both the Python programming
 
         language and the extended Cython programming language. It makes writing C
@@ -60,13 +59,16 @@ about:
         extensions for Python as easy as Python itself.
 
         '
+     
     dev_url: https://github.com/cython/cython
     doc_url: http://cython.org/#documentation
     home: http://www.cython.org/
     license: Apache-2.0
     license_file: LICENSE.txt
     summary: The Cython compiler for writing C extensions for the Python language
-extra:
+extra:  
+    additional-platforms:
+        - linux-aarch64
     copy_test_source_files: true
     final: true
     recipe-maintainers:
