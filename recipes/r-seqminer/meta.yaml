@@ -1,0 +1,73 @@
+{% set name = "r-seqminer" %}
+{% set version = "9.4" %}
+{% set build = 3 %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://cran.r-project.org/src/contrib/Archive/seqminer/seqminer_9.4.tar.gz 
+  sha256: ac7c6dcca46e3efe3f2f49e42ddb196683b8b218ed19d446148c404670d33e55
+
+build:
+  number: {{ build }}
+  run_exports:
+    - {{ pin_subpackage(name,max_pin="x.x") }}	
+  skip: true  # [win]
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - make
+    - pkg-config
+    - autoconf
+    - automake
+    - sysroot_linux-aarch64  # [aarch64]
+  host:
+    - r-base 4.4
+    - zlib
+    - bzip2
+    - xz
+    - curl
+    - openssl
+    - htslib  
+    - libdeflate
+    - sysroot_linux-aarch64  # [aarch64]
+  run:
+    - r-base 4.4
+    - {{ pin_compatible('zlib') }}
+    - {{ pin_compatible('bzip2') }}
+    - {{ pin_compatible('xz') }}
+    - {{ pin_compatible('curl') }}
+    - {{ pin_compatible('openssl') }}
+    - {{ pin_compatible('htslib') }}
+    - {{ pin_compatible('libdeflate') }}
+
+test:
+  commands:
+    - $R -e "library('seqminer')"  # [not win]
+  requires:
+    - r-base
+
+about:
+  home: https://CRAN.R-project.org/package=seqminer
+  license: GPL-3.0-only
+  license_family: GPL3
+  license_file: {{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3
+  summary: 'Fast Read and Query VCF Files'
+  description: |
+    Efficiently read VCF (Variant Call Format) files and query by genomic 
+    range and by specific variants. The package leverages Tabix and BCFtools 
+    for fast random access and supports parallel processing.
+  doc_url: https://cran.r-project.org/web/packages/seqminer/
+  dev_url: https://github.com/zhanxw/seqminer
+
+extra:
+  additional-platforms:
+    - linux-aarch64
+
