@@ -28,7 +28,7 @@ requirements:
     - pkg-config
     - sysroot_linux-aarch64  # [aarch64]
   host:
-    - r-base 4.2
+    - r-base 4.4
     - r-digest
     - r-stringi
     - zlib
@@ -39,7 +39,7 @@ requirements:
     - libiconv
     - sysroot_linux-aarch64  # [aarch64]
   run:
-    - r-base 4.2
+    - r-base 4.4
     - r-digest
     - r-stringi
     - {{ pin_compatible('zlib') }}
