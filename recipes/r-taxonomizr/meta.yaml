@@ -1,0 +1,75 @@
+{% set name = "r-taxonomizr" %}
+{% set version = "0.11.1" %}
+{% set build = 3 %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://cran.r-project.org/src/contrib/taxonomizr_{{ version }}.tar.gz
+  sha256: 4aa09a0275976cf52b2e2356b0006228d8e20977b29e36ebfcc18fe2f8154a1a
+
+build:
+  number: {{ build }}
+  run_exports:
+    - {{ pin_subpackage(name,max_pin="x.x") }}	
+  skip: true  # [win]
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - make
+    - pkg-config
+    - autoconf
+    - automake
+    - sysroot_linux-aarch64  # [aarch64]
+  host:
+    - r-base 4.4
+    - r-rcpp
+    - r-curl
+    - r-data.table
+    - r-dbi
+    - r-rsqlite
+    - sqlite
+    - zlib
+    - sysroot_linux-aarch64  # [aarch64]
+    - r-r.utils
+  run:
+    - r-base 4.4
+    - r-rcpp
+    - r-curl
+    - r-data.table
+    - r-dbi
+    - r-rsqlite
+    - {{ pin_compatible('sqlite') }}
+    - {{ pin_compatible('zlib') }}
+    - r-r.utils
+
+test:
+  commands:
+    - $R -e "library('taxonomizr')"  # [not win]
+  requires:
+    - r-base
+
+about:
+  home: https://CRAN.R-project.org/package=taxonomizr
+  license: GPL-2.0-or-later
+  license_family: GPL2
+  license_file: {{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-2
+  summary: 'Functions to Work with NCBI Accessions and Taxonomy'
+  description: |
+    Functions to work with NCBI accessions and taxonomy. Process the NCBI
+    taxonomy database and accession to taxid files to create a local
+    SQLite database and then use that database to look up taxonomy for
+    accession numbers or taxonomic IDs.
+  doc_url: https://CRAN.R-project.org/package=taxonomizr
+  dev_url: https://github.com/sherrillmix/taxonomizr
+
+extra:
+  additional-platforms:
+    - linux-aarch64
