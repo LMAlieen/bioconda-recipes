@@ -14,7 +14,9 @@ source:
     - 0001-fix-lapack-interfaces.patch
 
 build:
-  number: 0
+  number: 1
+  run_exports:
+    - {{ pin_subpackage("r-rphast",max_pin="x.x") }}
   rpaths:
     - lib/R/lib/
     - lib/
@@ -54,5 +56,8 @@ about:
     models.  It can also perform many basic operations on multiple sequence alignments
     and phylogenetic trees.
   license_family: BSD
+
+extra: 
   additional-platforms:
     - linux-aarch64
+
