@@ -1,0 +1,63 @@
+{% set name = "r-sna" %}
+{% set version = "2.8" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://cran.r-project.org/src/contrib/sna_{{ version }}.tar.gz
+  sha256: f20adb8e505cd56ae9ed0d9675337b4fab15d5dbad1bff3562edd971872a994c
+
+build:
+  number: 1
+  run_exports:
+    - {{ pin_subpackage(name,max_pin="x.x") }}	
+  skip: true  # [win32]
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - make
+  host:
+    - r-base 4.3
+    - r-network
+    - r-statnet.common
+    - r-nnet
+    - r-mgcv
+    - libblas
+    - liblapack
+    - openblas
+  run:
+    - r-base 4.3
+    - r-network
+    - r-statnet.common
+    - r-nnet
+    - r-mgcv
+    - {{ pin_compatible('libblas') }}
+    - {{ pin_compatible('liblapack') }}
+    - openblas
+
+test:
+  commands:
+    - Rscript -e "library(sna); packageVersion('sna'); print('sna package loaded successfully')"
+    - Rscript -e "library(sna); data(sampson); print('Test data loaded successfully')"
+
+about:
+  home: https://cran.r-project.org/package=sna
+  license: GPL-3
+  license_family: GPL3
+  summary: 'Tools for Social Network Analysis'
+  description: |
+    A range of tools for social network analysis, including node and graph-level
+    indices, structural distance and covariance methods, structural equivalence
+    detection, network regression, random graph generation, and 2D/3D network
+    visualization.
+  doc_url: https://cran.r-project.org/package=sna
+  dev_url: https://github.com/statnet/sna
+
+extra:
+  additional-platforms:
+    - linux-aarch64
