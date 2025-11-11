@@ -7,8 +7,10 @@ source:
   url: https://downloads.sourceforge.net/project/cmph/cmph/cmph-2.0.tar.gz
 
 build:
-  number: 7
+  number: 8
   skip: True  # [osx]
+  run_exports:
+    - {{ pin_subpackage(name,max_pin="x.x") }}
 
 package:
   name: {{ name }}
@@ -28,3 +30,7 @@ about:
   home: 'http://cmph.sourceforge.net/'
   summary: "CMPH - C Minimal Perfect Hashing Library"
   license: LGPL and the MPL 1.1
+
+extra:
+  additional-platforms:
+    - linux-aarch64
